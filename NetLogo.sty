@@ -1,0 +1,94 @@
+\ProvidesPackage{NetLogo}
+% Package by Eliane Rodenburg
+
+
+% Include these exact packages
+\RequirePackage{listings}               % cant have a listing without listings
+\RequirePackage{xcolor}                 % necessary for specific netlogo colors
+\RequirePackage[lighttt]{lmodern}       % necessary for bold text 
+
+
+% Exact colors used in NetLogo
+\definecolor{netRed}{RGB}{150,55,0}
+\definecolor{netBlue}{RGB}{0,0,181}
+\definecolor{netGreen}{RGB}{0,127,105}
+\definecolor{netPurple}{RGB}{102,0,150}
+\definecolor{netComment}{RGB}{90,90,90}
+
+
+
+% let users add literates for things like <breed>s-own
+\makeatletter
+\def\lst@Literatekey#1\@nil@{\let\lst@ifxliterate\lst@if
+    \expandafter\def\expandafter\lst@literate\expandafter{\lst@literate#1}}
+\makeatother
+
+%%% How to add own keywords? 
+%
+% Having defined a species "sheep", we want to color keywords like "sheep-own" green as well, additionally it should be in bold as well. We can do this as such:
+%% \begin{lstlisting}[language=Netlogo,
+%%                      literate=*{sheep-own\ }{{\color{netGreen}\bfseries sheep-own }}10
+%%                    ]
+% The number at the end indicates how many letters are in "sheep-own ". This can be smaller than the actual number, but will break if it is bigger.
+%
+% To add multiple keywords, define them as such:
+%% \begin{lstlisting}[language=Netlogo,
+%%                      literate=*{sheep-own\ }{{\color{netGreen}\bfseries sheep-own }}10
+%%                                {wolves-own\ }{{\color{netGreen}\bfseries wolves-own }}11
+%%                    ]
+%
+% General literate syntax is as follows:
+%% literate=[*]{original text}{replacement text}{number of characters}
+% Where the optional star indicates if it should override the style of comments/strings/other delimited text.
+
+
+% Definition of the language style
+\lstdefinelanguage{NetLogo}{
+	extendedchars=true, 
+	breaklines=true,                        % line wrapping
+	breakatwhitespace=true,
+	basicstyle=\ttfamily\small,             % font style
+	columns=fullflexible,                   % codelike column alignment
+	tabsize=2,
+    numbers=left,                           % line number alignment
+    numberstyle=\tiny\color{lightgray},     % line number style
+    numbersep=7pt,                          % LN distance from code
+	showstringspaces=false,                 % spaces within strings
+	comment=[l]{\;},                        % comments start with ;
+	commentstyle=\color{netComment},        % netlogo gray
+	string=[d]{"},
+	stringstyle=\color{netRed},             % strings are red
+	morekeywords=[1]{white, black, orange, blue, yellow, green, red, gray, nobody, pi, e},
+	keywordstyle=[1]\color{netRed},         % above keywords are red
+	morekeywords=[2]{create-turtles, setxy, facexy, fd, forward, left, right, hatch, face, rt, lt, sprout, clear-links, create-link-from, create-links-from, create-link-to, create-links-to, create-links-with, plotxy, set-current-plot, set-current-plot-pen, set-plot-background-color, set-plot-pen-color, set-plot-pen-interval, set-plot-pen-mode, setup-plots, update-plots, plot-pen-up, auto-plot-off, auto-plot-on, clear-all-plots, clear-plot, create-temporary-plot-pen, plot, plot-pen-down, plot-pen-reset, file-show, file-type, file-write, file-flush, file-open, file-print, file-close, file-close-all, file-delete, write, user-message, show, type, output-print, output-show, output-type, output-write, reset-timer, set-current-directory, export-view, export-interface, export-output, export-world, import-world, hubnet-reset, hubnet-reset-perspective, hubnet-send, hubnet-send-clear-output, hubnet-send-follow, hubnet-send-message, hubnet-send-override, hubnet-send-watch, beep, clear-output, hubnet-kick-all-clients, hubnet-kick-client, hubnet-fetch-message, follow, follow-me, reset-perspective, rp, ride, ride-me, watch, watch-me, hubnet-broadcast, hubnet-broadcast-clear-output, hubnet-broadcast-message, hubnet-clear-override, hubnet-clear-overrides, resize-world, set-patch-size, stop-inspecting-dead-agents, tick-advance, ca, clear-drawing, cd, clear-globals, clear-patches, cp, clear-ticks, clear-turtles, ct, display, no-display, wait, with-local-randomness, without-interruption, carefully, error, show-link, tie, untie, layout-radial, layout-spring, layout-tutte, die, create-link-with, set-histogram-num-bars, set-plot-x-range, set-plot-y-range, random-seed, histogram, export-plot, export-all-plots, print, reset-ticks, tick, clear-all, import-drawing, while, every, if, ifelse, let, loop, repeat, report, ask-concurrent, stop-inspecting, inspect, ask, foreach, import-pcolors, import-pcolors-rgb, run, set, stop,},
+	keywordstyle=[2]\color{netBlue},        % above keywords all appear blue
+	alsoletter={-,?,.*<>=+-!},
+	morekeywords=[3]{filter, first, <, timer, +, is-number?, member?, of, color, breed, n-of, one-of, other, patches, sort, sort-by, pcolor, and, map, empty?, insert-item, item, last, length, max, min, position, replace-item, reverse, >, =, !=, standard-deviation, shape, links, no-links, all?, any?, count, in-cone, max-one-of, min-one-of, neighbors, neighbors4, no-patches, patch-set, sort-on, turtles, turtles-here, up-to-n-of, with, scale-color, n-values, reduce, max-pxcor, runresult, ticks, subject, not, or, read-from-string, user-directory, user-file, user-new-file, but-first, but-last, fput, list, lput, modes, remove, remove-item, <=, >=, substring, word, *, -, abs, mean, new-seed, random, random-float, sqrt, subtract-headings, heading, hidden?, label, label-color, who, xcor, ycor, myself, both-ends, is-directed-link?, is-link?, is-link-set?, is-undirected-link?, link-heading, link-length, link-neighbor?, link, link-neighbors, link-with, my-in-links, my-links, my-out-links, other-end, out-link-neighbor?, out-link-neighbors, out-link-to, at-points, in-radius, is-agent?, is-agentset?, is-patch-set?, is-turtle-set?, link-set, max-n-of, min-n-of, no-turtles, turtle-set, turtles-at, turtles-on, who-are-not, with-max, with-min, Color, approximate-hsb, approximate-rgb, base-colors, extract-hsb, extract-rgb, hsb, rgb, shade-of?, wrap-color, error-message, ifelse-value, xor, is-anonymous-command?, is-anonymous-reporter?, max-pycor, min-pxcor, min-pycor, patch-size, world-width, world-height, hubnet-clients-list, hubnet-enter-message?, hubnet-exit-message?, hubnet-message, hubnet-message-source, hubnet-message-tag, hubnet-message-waiting?, date-and-time, mouse-down?, mouse-inside?, mouse-xcor, mouse-ycor, user-input, user-one-of, user-yes-or-no?, file-at-end?, file-exists?, file-read, file-read-characters, file-read-line, List, is-list?, range, remove-duplicates, sentence, shuffle, sublist, is-string?, /, ^, acos, asin, atan, ceiling, cos, exp, floor, int, ln, log, median, mod, precision, random-exponential, random-gamma, random-normal, random-poisson, remainder, round, sin, sum, tan, variance, autoplot?, plot-name, plot-pen-exists?, plot-x-max, plot-x-min, plot-y-max, plot-y-min, behaviorspace-experiment-name, behaviorspace-run-number, netlogo-version, netlogo-web?, Turtles, pen-mode, pen-size, size, Patches, plabel, plabel-color, pxcor, pycor, Links, end1, end2, thickness, tie-mode, random-pycor, self, patch, patch-at, patch-ahead, patch-at-heading-and-distance, patch-here, patch-left-and-ahead, patch-right-and-ahead, is-patch?, bf, butfirst, towards, random-xcor, random-ycor, distance, in-link-neighbor?, in-link-neighbors, in-link-from},
+	keywordstyle=[3]\color{netPurple},      % above keywords all appear purple
+	morekeywords=[4]{to, to-report, end, extensions, to-report, directed-link-breed, link-breed, patches-own, turtles-own, sheep-own, directed-link-breed, extensions, globals, __includes, <link-breeds>-own, to-report,  undirected-link-breed, directed-link-breed, links-own},                             % these are green (and bold)
+	keywordstyle=[4]{\color{netGreen}\bfseries},
+	morekeywords=[5]{true, false},          % these are red and bold
+	keywordstyle=[5]\color{netRed}\bfseries,
+    literate=*{breed\ [}{{\color{netGreen}\bfseries breed\ \color{black}\mdseries[}}7
+             {breed\ [ }{{\color{netGreen}\bfseries breed\ \color{black}\mdseries[ }}8    % breed can be 2 types of keywords depending on context, need to also define green version
+             {0}{{\color{netRed}0}}1
+             {1}{{\color{netRed}1}}1       % numbers are all red, adding them here makes sure
+             {2}{{\color{netRed}2}}1       % they're not highlighted within comments
+             {3}{{\color{netRed}3}}1
+             {4}{{\color{netRed}4}}1
+             {5}{{\color{netRed}5}}1
+             {6}{{\color{netRed}6}}1
+             {7}{{\color{netRed}7}}1
+             {8}{{\color{netRed}8}}1
+             {9}{{\color{netRed}9}}1
+             {0\ }{{\color{netRed}0 }}2
+             {1\ }{{\color{netRed}1 }}2
+             {2\ }{{\color{netRed}2 }}2
+             {3\ }{{\color{netRed}3 }}2
+             {4\ }{{\color{netRed}4 }}2
+             {5\ }{{\color{netRed}5 }}2
+             {6\ }{{\color{netRed}6 }}2
+             {7\ }{{\color{netRed}7 }}2
+             {8\ }{{\color{netRed}8 }}2
+             {9\ }{{\color{netRed}9 }}2
+}
