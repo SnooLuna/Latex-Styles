@@ -1,0 +1,54 @@
+\ProvidesPackage{ACT-R}
+% Package by Eliane Rodenburg
+% https://github.com/SnooLuna/Latex-Styles
+
+% Include these packages
+\RequirePackage{listings}               % cant have a listing without listings
+\RequirePackage{xcolor}                 % necessary for specific netlogo colors
+
+% let users add literates for things like <breed>s-own
+\makeatletter
+\def\lst@Literatekey#1\@nil@{\let\lst@ifxliterate\lst@if
+    \expandafter\def\expandafter\lst@literate\expandafter{\lst@literate#1}}
+\makeatother
+
+%%% How to add own keywords? 
+%
+% We might want to color certain chunk types or other keywords. For example, if we want to color each instance of "negative" in our listing to be bright red and in bold to highlight this kind of valence, we can do this as such:
+%% \begin{lstlisting}[language=ACT-R,
+%%                      literate=*{negative\ }{{\color{red}\bfseries negative }}9
+%%                    ]
+% The number at the end indicates how many letters are in "negative ". This can be smaller than the actual number, but will break if it is bigger.
+%
+% To add multiple keywords, define them as such:
+%% \begin{lstlisting}[language=ACT-R,
+%%                      literate=*{positive\ }{{\color{green}\bfseries positive }}9
+%%                                {negative\ }{{\color{red}\bfseries negative }}9
+%%                    ]
+%
+% General literate syntax is as follows:
+%% literate=[*]{original text}{replacement text}{number of characters in replacement}
+% Where the optional star indicates if it should override the style of comments/strings/other delimited text.
+
+
+% not yet finished but already pretty :)
+\lstdefinelanguage{ACT-R}{
+	extendedchars=true, 
+	breaklines=true,
+	basicstyle=\ttfamily\small,
+	columns=fullflexible,
+	tabsize=4,
+    keepspaces=true,
+	showstringspaces=false,
+	alsoletter={-,?,.*<>=+-!()},
+	morekeywords=[1]{=retrieval>, +retrieval>, ?retrieval>, -retrieval>, =visual-location>, =visual>, +visual>, ?visual>, -visual>, =imaginal>, +imaginal>, ?imaginal>, -imaginal>, =goal>, +goal>, ?goal>, -goal>, =manual>, +manual>, ?manual>, -manual>},
+	keywordstyle=[1]\color{violet},
+    morekeywords=[2]{isa, ==>},
+    keywordstyle=[2]\color{teal},
+    morekeywords=[3]{-},
+    keywordstyle=[3]\color{red},
+	string=[d]{"},
+	stringstyle=\color[rgb]{0.3,0.3,0.8},
+	comment=[l]{\;},
+	commentstyle=\color[rgb]{0.5,0.5,0.5}
+}
